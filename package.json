@@ -1,0 +1,52 @@
+{
+ "name": "ozma",
+ "private": true,
+ "version": "0.0.0",
+ "scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview"
+ },
+ "dependencies": {
+  "@engagespot/node": "^1.2.0",
+  "@engagespot/react-component": "^1.1.6",
+  "@sendgrid/mail": "^7.7.0",
+  "axios": "^1.1.2",
+  "embla-carousel-autoplay": "^7.0.3",
+  "embla-carousel-react": "^7.0.3",
+  "formik": "^2.2.9",
+  "leaflet": "^1.9.2",
+  "lodash": "^4.17.21",
+  "lodash.debounce": "^4.0.8",
+  "moment": "^2.29.4",
+  "react": "^18.2.0",
+  "react-debounce-input": "^3.3.0",
+  "react-dom": "^18.2.0",
+  "react-hot-toast": "^2.4.0",
+  "react-icons": "^4.4.0",
+  "react-leaflet": "^4.1.0",
+  "react-loader-spinner": "^5.3.4",
+  "react-paginate": "^8.1.4",
+  "react-router-dom": "^6.4.0",
+  "react-table": "^7.8.0",
+  "react-to-print": "^2.14.10",
+  "reactstrap": "^9.1.5",
+  "regenerator-runtime": "^0.13.10",
+  "sort-by": "^1.2.0",
+  "uuid": "^9.0.0",
+  "yup": "^0.32.11"
+ },
+ "devDependencies": {
+  "@tailwindcss/forms": "^0.5.3",
+  "@types/react": "^18.0.17",
+  "@types/react-dom": "^18.0.6",
+  "@vitejs/plugin-react": "^2.1.0",
+  "autoprefixer": "^10.4.11",
+  "postcss": "^8.4.16",
+  "prettier": "^2.7.1",
+  "prettier-plugin-tailwindcss": "^0.1.13",
+  "tailwindcss": "^3.1.8",
+  "vite": "^3.1.0"
+ },
+ "proxy": "http://localhost:5050/api"
+}

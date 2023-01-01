@@ -1,0 +1,123 @@
+/* Google fonts - Montserrat (300, 400, 500, 600, 700, 900) */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap");
+
+html {
+ scroll-behavior: smooth;
+}
+
+.embla__slide {
+ flex: 0 0 100%;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Start */
+.pagination {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin-top: 2rem;
+ margin-bottom: 3rem;
+}
+
+.pagination > li {
+ list-style: none;
+ border: 0.3px solid;
+}
+.pagination > li > a,
+.pagination > li > span {
+ float: left;
+ padding: 8px 20px;
+ line-height: 1.5;
+ border: 1px solid #ddd;
+ margin-left: -1px;
+}
+
+.pagination > li.active > a {
+ color: #fff;
+ background-color: #218838;
+ border-color: #1e7e34;
+}
+.pagination > li > a:hover {
+ background-color: #218838;
+ color: white;
+ cursor: pointer;
+}
+.pagination > li:first-child > a,
+.pagination > li:first-child > span {
+ margin-left: 0;
+}
+
+.btn-pagination {
+ background: #fafafa;
+ border: 1px solid #eaeaea;
+ padding: 0.7rem 1.2rem;
+ border-radius: 3px;
+ cursor: pointer;
+}
+.btn-pagination:hover {
+ background: #eaeaea;
+}
+.p-pagination {
+ font-size: 1rem;
+ margin: 0 1rem;
+}
+
+.nav-link {
+ @apply rounded py-3 px-4 font-medium transition hover:bg-primary hover:text-white;
+}
+
+.mobile-nav-link {
+ @apply rounded py-3 font-medium hover:underline;
+}
+
+.apply-btn,
+.logout-btn {
+ @apply rounded border-2 border-transparent bg-primary py-2 px-4 text-sm font-medium text-white transition hover:bg-primaryHover;
+}
+
+.login-btn {
+ @apply rounded border-2 border-primary py-2 px-4 text-sm font-medium text-primary transition hover:bg-primaryHover hover:text-white;
+}
+
+.hero-cta-apply {
+ @apply inline-block rounded border-2 border-transparent bg-primary px-4 py-3 font-semibold text-white transition hover:bg-primaryHover;
+}
+
+.hero-cta-plans {
+ @apply inline-block rounded border-2 border-primary px-4 py-3 font-semibold text-primary transition hover:bg-primary hover:text-white;
+}
+
+.subscribe-btn {
+ @apply inline-block w-full rounded bg-primary py-3 px-4 text-center font-medium text-white transition hover:bg-primaryHover;
+}
+
+.footer-apply-btn {
+ @apply inline-block rounded bg-white px-4 py-3 text-sm font-medium text-primary transition hover:bg-primaryHover hover:text-white;
+}
+
+.read-more-btn {
+ @apply inline-block rounded bg-primary py-2 px-5 text-white transition hover:bg-primaryHover;
+}
+
+.continue-btn {
+ @apply cursor-pointer rounded bg-primary px-5 py-3 font-semibold text-white transition hover:bg-primaryHover;
+}
+
+.delete-btn {
+ @apply cursor-pointer rounded bg-red-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-red-700;
+}
+
+.start-billing-btn {
+ @apply w-full cursor-pointer rounded bg-primary px-6 py-3 text-sm font-medium text-white transition hover:bg-primaryHover disabled:cursor-not-allowed disabled:opacity-50 md:w-auto;
+}
+
+/* Custom CSS End */
+
+@layer base {
+ body {
+  @apply bg-bodyBg font-montserrat;
+ }
+}
