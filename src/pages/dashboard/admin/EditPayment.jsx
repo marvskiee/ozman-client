@@ -59,10 +59,10 @@ const EditPayment = () => {
         <p className="flex flex-col pt-4 font-semibold">
           Amount: <span className="font-normal">₱{data.amount}</span>
         </p>
-        {data.receipt && (
+        {data?.receipt && (
           <>
             <p className="flex flex-col pt-4 font-semibold">Receipt:</p>
-            <img className="h-48 w-96 object-none" src={data.receipt} />
+            <img className="h-48 w-96" src={data.receipt} />
           </>
         )}
         <button

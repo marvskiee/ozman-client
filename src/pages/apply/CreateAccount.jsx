@@ -61,7 +61,7 @@ const CreateAccount = () => {
       {
         notification: {
           title: `${values.firstName} ${values.lastName} subscribes to Plan ${values.selectedPlan}`,
-          url: "http://127.0.0.1:5173/admin-dashboard/subscribers",
+          url: "https://aiointernet.online/admin-dashboard/subscribers",
         },
         recipients: ["ezikielpuratulawan@gmail.com"],
       },
