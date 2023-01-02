@@ -84,6 +84,9 @@ const EditUser = () => {
 
   const handleApprove = async () => {
     try {
+      axiosInstance.post("api/sms/application-approved", {
+        number: data.contactNumber.replace("+", ""),
+      });
       // const res = await axiosInstance.put("/api/users/approve-application/" + data._id, {
       //   id: data._id,
       //   applicationStatus: "Approved",

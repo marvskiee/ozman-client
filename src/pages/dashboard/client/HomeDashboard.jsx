@@ -114,7 +114,9 @@ const HomeDashboard = () => {
         <>
           {paymentData.length !== 0 ? (
             <div>
-              <p className="pt-1 text-sm">Account Number: {customerName._id}</p>
+              <p className="pt-1 text-sm">
+                Account Number: {customerName?.accountNumber}
+              </p>
 
               <section className="py-6">
                 <h2 className="pb-1 text-lg font-semibold">Balance</h2>
