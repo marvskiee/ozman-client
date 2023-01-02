@@ -62,7 +62,7 @@ const EditPayment = () => {
         {data.receipt && (
           <>
             <p className="flex flex-col pt-4 font-semibold">Receipt:</p>
-            <img className="h-48 w-96 object-none" src={PF + data.receipt} />
+            <img className="h-48 w-96 object-none" src={data.receipt} />
           </>
         )}
         <button

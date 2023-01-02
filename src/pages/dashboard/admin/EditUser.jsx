@@ -272,7 +272,7 @@ const EditUser = () => {
                   Valid Document
                 </label>
                 <a
-                  href={PF + data.legalDocument}
+                  href={data.legalDocument}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="pb-1 text-sm font-semibold underline hover:underline"

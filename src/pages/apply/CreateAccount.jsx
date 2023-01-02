@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { axiosInstance, delay } from "../../config";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
@@ -10,13 +10,98 @@ import Modal2 from "../../components/Modal2";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
+//firebase
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
+import { v4 } from "uuid";
+import { storage } from "../../data/firebase";
+
 const CreateAccount = () => {
   const { dispatch } = useContext(AuthContext);
   const [openModal, setOpenModal] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
   const from = location.state?.from?.pathname || "/client-dashboard";
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const setProofUrlRef = useRef();
+  const uploadProof = (values) => {
+    // const filename = Date.now() + values.legalDocument.name;
+    // const data = new FormData();
+    // data.append("name", filename);
+    // data.append("file", values.legalDocument);
+    // const fileURL = filename;
+    setIsLoading(true);
 
+    if (values?.legalDocument == null) {
+      setIsLoading(false);
+      return;
+    }
+    const imageRef = ref(storage, `images/${values.legalDocument.name + v4()}`);
+    uploadBytes(imageRef, values.legalDocument)
+      .then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setProofUrlRef.current = url;
+          sendHandler(values);
+        });
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
+  };
+  const sendHandler = async (values) => {
+    axiosInstance.post("api/sms/application-passed", {
+      number: values.contactNumber.replace("+", ""),
+    });
+    axios.post(
+      "https://api.engagespot.co/v3/notifications",
+      {
+        notification: {
+          title: `${values.firstName} ${values.lastName} subscribes to Plan ${values.selectedPlan}`,
+          url: "http://127.0.0.1:5173/admin-dashboard/subscribers",
+        },
+        recipients: ["ezikielpuratulawan@gmail.com"],
+      },
+      {
+        headers: {
+          "X-ENGAGESPOT-API-KEY": "mpz2fsz9ftitwmf3h050wi",
+          "X-ENGAGESPOT-API-SECRET":
+            "1jenirs3l2npkbbbc53hkipba1i280da19ca791bjdeih965d",
+        },
+      }
+    );
+    try {
+      const res = await axiosInstance.post("api/auth/register", {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
+
+        address: values.address,
+        contactNumber: values.contactNumber,
+        selectedPlan: values.selectedPlan,
+        legalDocument: setProofUrlRef.current,
+      });
+      console.log("bagoooooo: ", res.data._id);
+      axiosInstance.post("api/email/verify", {
+        to: res.data.email,
+        _id: res.data._id,
+      });
+
+      toast.success(
+        "Account Successfully Created. Please check your email to verify."
+      );
+      // dispatch({ type: "LOGIN", payload: res.data });
+      await delay(3000);
+      navigate("/login", { replace: true });
+    } catch (err) {
+      toast.error("Account Registration Failed");
+      console.log(err);
+    }
+  };
   const schema = yup.object().shape({
     firstName: yup
       .string()
@@ -108,63 +193,7 @@ const CreateAccount = () => {
           legalDocument: "",
           acceptedTerms: false,
         }}
-        onSubmit={async (values) => {
-          axiosInstance.post("api/sms/application-passed", {
-            number: values.contactNumber.replace("+", ""),
-          });
-          axios.post(
-            "https://api.engagespot.co/v3/notifications",
-            {
-              notification: {
-                title: `${values.firstName} ${values.lastName} subscribes to Plan ${values.selectedPlan}`,
-                url: "http://127.0.0.1:5173/admin-dashboard/subscribers",
-              },
-              recipients: ["ezikielpuratulawan@gmail.com"],
-            },
-            {
-              headers: {
-                "X-ENGAGESPOT-API-KEY": "mpz2fsz9ftitwmf3h050wi",
-                "X-ENGAGESPOT-API-SECRET":
-                  "1jenirs3l2npkbbbc53hkipba1i280da19ca791bjdeih965d",
-              },
-            }
-          );
-          try {
-            const filename = Date.now() + values.legalDocument.name;
-            const data = new FormData();
-            data.append("name", filename);
-            data.append("file", values.legalDocument);
-            const fileURL = filename;
-
-            axiosInstance.post("api/upload", data);
-            const res = await axiosInstance.post("api/auth/register", {
-              firstName: values.firstName,
-              lastName: values.lastName,
-              email: values.email,
-              password: values.password,
-
-              address: values.address,
-              contactNumber: values.contactNumber,
-              selectedPlan: values.selectedPlan,
-              legalDocument: fileURL,
-            });
-            console.log("bagoooooo: ", res.data._id);
-            axiosInstance.post("api/email/verify", {
-              to: res.data.email,
-              _id: res.data._id,
-            });
-
-            toast.success(
-              "Account Successfully Created. Please check your email to verify."
-            );
-            // dispatch({ type: "LOGIN", payload: res.data });
-            await delay(3000);
-            navigate("/login", { replace: true });
-          } catch (err) {
-            toast.error("Account Registration Failed");
-            console.log(err);
-          }
-        }}
+        onSubmit={(values) => uploadProof(values)}
       >
         {({ setFieldValue }) => (
           <Form action="" className="mt-10 mb-16 w-full md:w-1/2">
@@ -434,8 +463,8 @@ const CreateAccount = () => {
             />
 
             <input
-              type="submit"
-              value="Submit"
+              type={!isLoading ? "submit" : "button"}
+              value={!isLoading ? "Submit" : "Submitting..."}
               className="w-full cursor-pointer rounded bg-primary px-6 py-3 font-semibold text-white transition hover:bg-primaryHover md:w-auto"
             />
           </Form>
